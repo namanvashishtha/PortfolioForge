@@ -37,8 +37,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const portfolioData = insertPortfolioSchema.parse({
-        ...req.body,
+        name: req.body.name || 'Untitled Portfolio',
+        layout: req.body.layout || { components: [], theme: {} },
         userId,
+        isPublished: false,
       });
       
       const portfolio = await storage.createPortfolio(portfolioData);

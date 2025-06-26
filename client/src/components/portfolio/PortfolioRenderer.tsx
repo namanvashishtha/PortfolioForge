@@ -23,7 +23,6 @@ export default function PortfolioRenderer({
   const renderComponent = (component: ComponentData) => {
     const isSelected = selectedComponentId === component.id;
     const commonProps = {
-      key: component.id,
       id: component.id,
       isSelected,
       isEditable,
@@ -33,17 +32,17 @@ export default function PortfolioRenderer({
 
     switch (component.type) {
       case 'header':
-        return <HeaderComponent {...commonProps} />;
+        return <HeaderComponent key={component.id} {...commonProps} />;
       case 'hero':
-        return <HeroComponent {...commonProps} />;
+        return <HeroComponent key={component.id} {...commonProps} />;
       case 'about':
-        return <AboutComponent {...commonProps} />;
+        return <AboutComponent key={component.id} {...commonProps} />;
       case 'projects':
-        return <ProjectsComponent {...commonProps} />;
+        return <ProjectsComponent key={component.id} {...commonProps} />;
       case 'skills':
-        return <SkillsComponent {...commonProps} />;
+        return <SkillsComponent key={component.id} {...commonProps} />;
       case 'contact':
-        return <ContactComponent {...commonProps} />;
+        return <ContactComponent key={component.id} {...commonProps} />;
       default:
         return (
           <div key={component.id} className="p-4 border border-red-200 rounded-lg bg-red-50">

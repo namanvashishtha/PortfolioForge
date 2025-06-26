@@ -85,7 +85,7 @@ export default function Editor() {
   const saveMutation = useMutation({
     mutationFn: async () => {
       const portfolioData = {
-        name: portfolioName,
+        name: portfolioName || 'Untitled Portfolio',
         layout: { 
           components: components || [],
           theme: {}
