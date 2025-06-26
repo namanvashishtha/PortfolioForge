@@ -41,6 +41,9 @@ export default function Editor() {
   // Get portfolio ID from URL params
   const urlParams = new URLSearchParams(window.location.search);
   const portfolioIdFromUrl = urlParams.get('id');
+  
+  // Properties panel state
+  const [isPropertiesPanelOpen, setIsPropertiesPanelOpen] = useState(false);
 
   // Load existing portfolio if ID is provided
   const { data: portfolio, isLoading, error } = useQuery<Portfolio>({
@@ -222,6 +225,17 @@ export default function Editor() {
               {isPreviewMode ? 'Edit' : 'Preview'}
             </Button>
 
+            {!isPreviewMode && (
+              <Button 
+                variant={isPropertiesPanelOpen ? "default" : "outline"} 
+                size="sm" 
+                onClick={() => setIsPropertiesPanelOpen(!isPropertiesPanelOpen)}
+              >
+                <i className="fas fa-cog mr-2"></i>
+                Properties
+              </Button>
+            )}
+
             <Button onClick={() => setIsPublishModalOpen(true)}>
               <i className="fas fa-rocket mr-2"></i>
               Publish
@@ -241,7 +255,7 @@ export default function Editor() {
         <div className="flex flex-1 overflow-hidden">
           {!isPreviewMode && <ComponentsSidebar />}
           <CanvasEditor />
-          {!isPreviewMode && <PropertiesPanel />}
+          {!isPreviewMode && isPropertiesPanelOpen && <PropertiesPanel />}
         </div>
 
         <PublishModal
