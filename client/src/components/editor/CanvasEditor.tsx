@@ -41,39 +41,41 @@ export default function CanvasEditor() {
   return (
     <div className="flex-1 flex flex-col bg-gray-50 overflow-hidden">
       {/* Canvas Toolbar */}
-      <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-600">Zoom:</span>
-            <select className="text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-              <option>100%</option>
-              <option>75%</option>
-              <option>50%</option>
-              <option>Fit</option>
-            </select>
+      {!isPreviewMode && (
+        <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-600">Zoom:</span>
+              <select className="text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                <option>100%</option>
+                <option>75%</option>
+                <option>50%</option>
+                <option>Fit</option>
+              </select>
+            </div>
+            
+            <div className="flex items-center space-x-1">
+              <button className="p-2 text-gray-400 hover:text-gray-600 rounded hover:bg-gray-100 transition-colors" title="Undo">
+                <i className="fas fa-undo text-sm"></i>
+              </button>
+              <button className="p-2 text-gray-400 hover:text-gray-600 rounded hover:bg-gray-100 transition-colors" title="Redo">
+                <i className="fas fa-redo text-sm"></i>
+              </button>
+            </div>
           </div>
-          
-          <div className="flex items-center space-x-1">
-            <button className="p-2 text-gray-400 hover:text-gray-600 rounded hover:bg-gray-100 transition-colors" title="Undo">
-              <i className="fas fa-undo text-sm"></i>
-            </button>
-            <button className="p-2 text-gray-400 hover:text-gray-600 rounded hover:bg-gray-100 transition-colors" title="Redo">
-              <i className="fas fa-redo text-sm"></i>
-            </button>
-          </div>
-        </div>
 
-        <div className="flex items-center space-x-2">
-          <button className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-md hover:bg-gray-100 transition-colors">
-            <i className="fas fa-mobile-alt"></i>
-            <span className="hidden sm:inline">Mobile</span>
-          </button>
-          <button className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium bg-primary-50 text-primary-600 rounded-md">
-            <i className="fas fa-desktop"></i>
-            <span className="hidden sm:inline">Desktop</span>
-          </button>
+          <div className="flex items-center space-x-2">
+            <button className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-md hover:bg-gray-100 transition-colors">
+              <i className="fas fa-mobile-alt"></i>
+              <span className="hidden sm:inline">Mobile</span>
+            </button>
+            <button className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium bg-primary-50 text-primary-600 rounded-md">
+              <i className="fas fa-desktop"></i>
+              <span className="hidden sm:inline">Desktop</span>
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Canvas Container */}
       <div className="flex-1 p-6 overflow-auto">

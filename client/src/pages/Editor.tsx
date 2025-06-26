@@ -23,13 +23,19 @@ export default function Editor() {
   
   const {
     components,
+    selectedComponentId,
+    isPreviewMode,
     portfolioId,
     portfolioName,
     isSaving,
+    addComponent,
+    selectComponent,
+    setPreviewMode,
+    setPortfolioId,
+    setPortfolioName,
     setSaving,
     loadPortfolio,
-    setPortfolioName,
-    addComponent,
+    clearEditor,
   } = useEditorStore();
 
   // Get portfolio ID from URL params
@@ -128,17 +134,18 @@ export default function Editor() {
     },
   });
 
-  // Auto-save when components or name changes
-  useEffect(() => {
-    if (components.length > 0 || portfolioName !== 'Untitled Portfolio') {
-      const timeoutId = setTimeout(() => {
-        setSaving(true);
-        saveMutation.mutate();
-      }, 2000);
-
-      return () => clearTimeout(timeoutId);
+  // Manual save function
+  const handleSave = () => {
+    if (!saveMutation.isPending && !isSaving) {
+      setSaving(true);
+      saveMutation.mutate();
     }
-  }, [components, portfolioName]);
+  };
+
+  // Preview mode toggle
+  const handlePreview = () => {
+    setPreviewMode(!isPreviewMode);
+  };
 
   useEffect(() => {
     if (!saveMutation.isPending) {
@@ -162,13 +169,7 @@ export default function Editor() {
     }
   };
 
-  const handlePreview = () => {
-    // TODO: Implement preview functionality
-    toast({
-      title: "Preview",
-      description: "Preview functionality coming soon!",
-    });
-  };
+
 
   if (authLoading || isLoading) {
     return (
@@ -208,12 +209,17 @@ export default function Editor() {
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-sm text-gray-600">
               <i className={`fas ${isSaving ? 'fa-spinner fa-spin' : 'fa-cloud-upload-alt'} ${isSaving ? 'text-blue-500' : 'text-green-500'}`}></i>
-              <span>{isSaving ? 'Saving...' : 'All changes saved'}</span>
+              <span>{isSaving ? 'Saving...' : 'Saved'}</span>
             </div>
             
+            <Button variant="outline" size="sm" onClick={handleSave} disabled={saveMutation.isPending}>
+              <i className="fas fa-save mr-2"></i>
+              {saveMutation.isPending ? 'Saving...' : 'Save'}
+            </Button>
+            
             <Button variant="outline" size="sm" onClick={handlePreview}>
-              <i className="fas fa-eye mr-2"></i>
-              Preview
+              <i className={`fas ${isPreviewMode ? 'fa-edit' : 'fa-eye'} mr-2`}></i>
+              {isPreviewMode ? 'Edit' : 'Preview'}
             </Button>
 
             <Button onClick={() => setIsPublishModalOpen(true)}>
@@ -233,9 +239,9 @@ export default function Editor() {
 
         {/* Main Layout */}
         <div className="flex flex-1 overflow-hidden">
-          <ComponentsSidebar />
+          {!isPreviewMode && <ComponentsSidebar />}
           <CanvasEditor />
-          <PropertiesPanel />
+          {!isPreviewMode && <PropertiesPanel />}
         </div>
 
         <PublishModal
