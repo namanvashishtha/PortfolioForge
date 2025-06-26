@@ -1,0 +1,138 @@
+I want to build a responsive Portfolio Builder Web Application (mobile + desktop) using React + Vite as the frontend framework. This application will allow users to sign up / log in, design personal portfolio websites using a drag-and-drop interface, and then one-click deploy their portfolio to the web using Vercel’s deployment API, returning a public URL. Here's a breakdown of the detailed functionality, architecture, and requirements:
+
+🌐 High-Level Product Vision
+A Wix-like no-code builder, specifically focused on developer/design portfolios, with:
+
+Pre-built customizable portfolio templates (think: About Me, Projects, Experience, Skills, Contact).
+
+Easy drag-and-drop editor for users to build UIs from pre-defined blocks.
+
+Live preview of the portfolio in real time.
+
+One-click "Publish" feature that:
+
+Builds the static files.
+
+Pushes the build to Vercel automatically via API.
+
+Returns a live URL for the user to access and share.
+
+🛠️ Technical Stack
+✅ Frontend (React + Vite)
+React (functional components, hooks, context)
+
+Vite for blazing-fast bundling and dev experience
+
+Tailwind CSS for utility-first styling
+
+Drag-and-drop functionality using @dnd-kit/core or react-beautiful-dnd
+
+State management: React Context or Zustand
+
+Routing: react-router-dom
+
+Form handling: react-hook-form or Formik
+
+✅ Backend (Optional, for Auth + Storage)
+Node.js + Express or Firebase backend
+
+Authentication: Firebase Auth, Supabase Auth, or JWT-based Node API
+
+Database: Firestore, Supabase DB, or MongoDB Atlas for storing:
+
+User profiles
+
+Portfolio JSON layout data
+
+Metadata (deployment URL, timestamps, etc.)
+
+✅ Deployment Integration
+Use Vercel REST API or @vercel/client npm package to programmatically:
+
+Create a project
+
+Upload built assets
+
+Deploy from user's build
+
+Fetch deployment URL
+
+🧩 Key Functional Modules
+1. Authentication
+Signup/Login page (email/password, optional OAuth)
+
+JWT/session-based user auth
+
+User metadata saved in DB
+
+2. Dashboard UI
+"Create New Portfolio" option
+
+Option to edit previous portfolios
+
+List of past deployments with live URLs
+
+3. Portfolio Editor
+Drag-and-drop canvas area
+
+Sidebar for selecting components (e.g., Header, Project, Skills, etc.)
+
+Ability to edit text, images, themes
+
+JSON-based layout representation for persistency
+
+Live preview panel
+
+4. Save & Publish
+Save layout data to DB
+
+On “Publish”, generate a static React app from layout JSON:
+
+Use a builder script to convert layout to a static React/Vite app
+
+Zip or prepare the file system
+
+Push to Vercel using API
+
+Return and store deployment URL
+
+5. Public Portfolio
+URL structure: https://<username>.vercel.app
+
+SEO-optimized, responsive React site
+
+Clean public view (no editor controls)
+
+📦 Extra Capabilities (Future Enhancements)
+Theme switching (light/dark/custom palette)
+
+Upload custom domain
+
+Export as zip (static site)
+
+Analytics dashboard for portfolio views
+
+Resume parsing/upload module
+
+Integration with GitHub, LinkedIn, etc.
+
+PDF Portfolio generation from online version
+
+🧠 AI Model Instruction
+As an AI model, you are expected to:
+
+Build or assist in building the frontend drag-and-drop editor using React + Vite.
+
+Design a data model to convert drag-and-drop UI state into deployable React code.
+
+Create scripts/functions to automatically generate deployable code structure from JSON.
+
+Integrate with Vercel deployment APIs for publishing user sites programmatically.
+
+Build a system that is responsive, optimized for both mobile and desktop, and production-grade.
+
+Maintain a component library of reusable blocks (custom UI components).
+
+Optimize for performance and scalability.
+
+Return deploy status, logs, and URL after publishing.
