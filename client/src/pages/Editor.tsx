@@ -72,8 +72,9 @@ export default function Editor() {
   // Load portfolio data when available
   useEffect(() => {
     if (portfolio) {
+      const components = portfolio.layout?.components || [];
       loadPortfolio(
-        portfolio.layout.components || [],
+        components,
         portfolio.name,
         portfolio.id
       );
@@ -85,7 +86,10 @@ export default function Editor() {
     mutationFn: async () => {
       const portfolioData = {
         name: portfolioName,
-        layout: { components },
+        layout: { 
+          components: components || [],
+          theme: {}
+        },
       };
 
       if (portfolioId) {
