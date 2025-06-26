@@ -16,9 +16,16 @@ interface PublishModalProps {
 
 export default function PublishModal({ isOpen, onClose, portfolioId, portfolioName }: PublishModalProps) {
   const [siteName, setSiteName] = useState(
-    portfolioName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+    (portfolioName || 'untitled-portfolio').toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
   );
   const { toast } = useToast();
+
+  // Update siteName when portfolioName changes
+  useEffect(() => {
+    if (portfolioName) {
+      setSiteName(portfolioName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+    }
+  }, [portfolioName]);
   const queryClient = useQueryClient();
 
   const publishMutation = useMutation({
