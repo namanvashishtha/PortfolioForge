@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
@@ -7,10 +7,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { isUnauthorizedError } from '@/lib/authUtils';
 import type { Portfolio } from '@/types/portfolio';
+import ThreeScene from '@/components/ThreeScene';
 
 export default function Dashboard() {
-  const { user, isLoading: authLoading } = useAuth();
+  const { user, isLoading: authLoading, logout } = useAuth();
   const { toast } = useToast();
+  const [selectedPortfolioId, setSelectedPortfolioId] = useState<number | null>(null);
 
   const { data: portfolios, isLoading, error } = useQuery<Portfolio[]>({
     queryKey: ['/api/portfolios'],
@@ -33,111 +35,227 @@ export default function Dashboard() {
 
   if (authLoading || isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+      <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden">
+        {/* Cosmic loading background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(2px 2px at 20px 30px, #ffffff, transparent),
+                             radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                             radial-gradient(1px 1px at 90px 40px, #ffffff, transparent),
+                             radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                             radial-gradient(2px 2px at 160px 30px, #ffffff, transparent)`,
+            backgroundRepeat: 'repeat',
+            backgroundSize: '200px 100px'
+          }} />
+        </div>
+        <div className="text-center relative z-10">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-6" 
+               style={{
+                 boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)'
+               }}></div>
+          <p className="text-gray-300 text-lg">Navigating through the cosmos...</p>
+          <div className="flex items-center justify-center space-x-2 mt-4 text-gray-500">
+            <span className="animate-pulse">✦</span>
+            <span className="animate-pulse delay-100">◦</span>
+            <span className="animate-pulse delay-200">✧</span>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Cosmic background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(2px 2px at 20px 30px, #ffffff, transparent),
+                           radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                           radial-gradient(1px 1px at 90px 40px, #ffffff, transparent),
+                           radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                           radial-gradient(2px 2px at 160px 30px, #ffffff, transparent)`,
+          backgroundRepeat: 'repeat',
+          backgroundSize: '200px 100px'
+        }} />
+      </div>
+      
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-black bg-opacity-80 border-b border-gray-800 backdrop-blur-sm relative z-10">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
-              <i className="fas fa-layer-group text-white text-sm"></i>
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
+              <span className="text-white text-xl">✦</span>
             </div>
-            <h1 className="text-xl font-bold text-gray-900">PortfolioBuilder</h1>
+            <h1 className="text-2xl font-bold text-white">PortfolioForge</h1>
+            <span className="text-gray-400 text-sm font-mono">COSMIC</span>
           </div>
           
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-gray-300 flex items-center gap-2">
+              <span>🚀</span>
               Welcome, {user?.firstName || user?.email}
             </span>
             <Button 
               variant="outline" 
               size="sm"
-              onClick={() => window.location.href = '/api/logout'}
+              onClick={logout}
+              className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white"
             >
-              Logout
+              Exit Galaxy
             </Button>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-8">
+      <div className="container mx-auto px-6 py-8 relative z-10">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Your Portfolios</h2>
-            <p className="text-gray-600 mt-1">Create and manage your portfolio websites</p>
+            <h2 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
+              <span>🌌</span>
+              Your Cosmic Portfolios
+            </h2>
+            <p className="text-gray-300 mt-1">Navigate and manage your portfolio constellation</p>
+            <div className="flex items-center space-x-4 mt-3 text-gray-500 text-sm">
+              <span className="flex items-center gap-1">
+                <span>✦</span>
+                <span>Active Portfolios</span>
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1">
+                <span>🚀</span>
+                <span>Ready to Launch</span>
+              </span>
+            </div>
           </div>
           <Link href="/editor">
-            <Button className="flex items-center space-x-2">
-              <i className="fas fa-plus"></i>
-              <span>New Portfolio</span>
+            <Button className="flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg">
+              <span>✦</span>
+              <span>Create New Galaxy</span>
             </Button>
           </Link>
         </div>
 
-        {/* Portfolios Grid */}
         {portfolios && portfolios.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {portfolios.map((portfolio) => (
-              <Card key={portfolio.id} className="hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <span>{portfolio.name}</span>
-                    {portfolio.isPublished && (
-                      <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
-                        Published
-                      </span>
-                    )}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Last updated: {new Date(portfolio.updatedAt).toLocaleDateString()}
-                  </p>
-                  
-                  <div className="flex space-x-2">
-                    <Link href={`/editor?id=${portfolio.id}`}>
-                      <Button size="sm" variant="outline" className="flex-1">
-                        <i className="fas fa-edit mr-2"></i>
-                        Edit
-                      </Button>
-                    </Link>
-                    
-                    {portfolio.publishedUrl && (
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => window.open(portfolio.publishedUrl, '_blank')}
-                        className="flex-1"
-                      >
-                        <i className="fas fa-external-link-alt mr-2"></i>
-                        View
-                      </Button>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* 3D Interactive Portfolio Viewer */}
+            <div className="bg-black bg-opacity-60 p-6 rounded-xl shadow-2xl border border-gray-800 backdrop-blur-sm">
+              <h3 className="text-2xl font-semibold text-white mb-4 flex items-center gap-2">
+                <span>🌠</span>
+                Cosmic Portfolio Navigator
+              </h3>
+              <div className="bg-black bg-opacity-40 rounded-lg p-4 border border-gray-700">
+                <ThreeScene 
+                  onSelectItem={(id) => {
+                    const portfolio = portfolios.find(p => p.id === id);
+                    if (portfolio) {
+                      setSelectedPortfolioId(portfolio.id);
+                      toast({
+                        title: "🌟 Portfolio Selected",
+                        description: `You selected: ${portfolio.name}`,
+                      });
+                    }
+                  }} 
+                />
+              </div>
+              <div className="mt-4 text-center">
+                <p className="text-gray-400 mb-3 flex items-center justify-center gap-2">
+                  <span>🖱️</span>
+                  Navigate through your portfolio constellation
+                </p>
+                {selectedPortfolioId && (
+                  <Link href={`/editor?id=${selectedPortfolioId}`}>
+                    <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+                      <span className="mr-2">🚀</span>
+                      Launch Editor
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            </div>
+
+            {/* Portfolios List */}
+            <div>
+              <h3 className="text-2xl font-semibold text-white mb-4 flex items-center gap-2">
+                <span>📋</span>
+                Portfolio Constellation
+              </h3>
+              <div className="space-y-4">
+                {portfolios.map((portfolio) => (
+                  <Card 
+                    key={portfolio.id} 
+                    className={`bg-black bg-opacity-60 border-gray-800 hover:border-blue-500 transition-all duration-300 hover:shadow-xl backdrop-blur-sm cursor-pointer ${
+                      selectedPortfolioId === portfolio.id ? 'ring-2 ring-blue-400 border-blue-400' : ''
+                    }`}
+                    onClick={() => setSelectedPortfolioId(portfolio.id)}
+                  >
+                    <CardHeader>
+                      <CardTitle className="flex items-center justify-between text-white">
+                        <span className="flex items-center gap-2">
+                          <span>✦</span>
+                          {portfolio.name}
+                        </span>
+                        {portfolio.isPublished && (
+                          <span className="px-3 py-1 bg-green-500 bg-opacity-20 text-green-300 text-xs rounded-full border border-green-500 flex items-center gap-1">
+                            <span>🚀</span>
+                            Live in Space
+                          </span>
+                        )}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-400 mb-4 flex items-center gap-2">
+                        <span>🕒</span>
+                        Last orbit: {new Date(portfolio.updatedAt).toLocaleDateString()}
+                      </p>
+                      
+                      <div className="flex space-x-2">
+                        <Link href={`/editor?id=${portfolio.id}`}>
+                          <Button size="sm" variant="outline" className="flex-1 border-gray-600 text-gray-300 hover:bg-blue-600 hover:text-white hover:border-blue-500">
+                            <span className="mr-2">🛠️</span>
+                            Modify
+                          </Button>
+                        </Link>
+                        
+                        {portfolio.publishedUrl && (
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(portfolio.publishedUrl, '_blank');
+                            }}
+                            className="flex-1 border-gray-600 text-gray-300 hover:bg-purple-600 hover:text-white hover:border-purple-500"
+                          >
+                            <span className="mr-2">🌐</span>
+                            Explore
+                          </Button>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
           </div>
         ) : (
-          <Card className="text-center py-12">
+          <Card className="text-center py-16 bg-black bg-opacity-60 border-gray-800 backdrop-blur-sm">
             <CardContent>
-              <i className="fas fa-folder-open text-4xl text-gray-300 mb-4"></i>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No portfolios yet</h3>
-              <p className="text-gray-600 mb-6">Create your first portfolio to get started</p>
+              <div className="text-6xl mb-6">🌌</div>
+              <h3 className="text-2xl font-semibold text-white mb-3">Your Galaxy Awaits</h3>
+              <p className="text-gray-400 mb-8 max-w-md mx-auto">
+                The cosmic void is ready for your first portfolio creation. 
+                Begin your journey through the digital universe.
+              </p>
+              <div className="flex items-center justify-center space-x-2 mb-6 text-gray-500">
+                <span className="animate-pulse">✦</span>
+                <span className="animate-pulse delay-100">◦</span>
+                <span className="animate-pulse delay-200">✧</span>
+              </div>
               <Link href="/editor">
-                <Button>
-                  <i className="fas fa-plus mr-2"></i>
-                  Create Portfolio
+                <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-lg px-8 py-3">
+                  <span className="mr-2">✦</span>
+                  Create Your First Galaxy
                 </Button>
               </Link>
             </CardContent>

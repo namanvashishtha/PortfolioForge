@@ -39,59 +39,70 @@ export default function CanvasEditor() {
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-gray-50 overflow-hidden">
-      {/* Canvas Toolbar */}
+    <div className="flex-1 flex flex-col bg-black bg-opacity-40 overflow-hidden backdrop-blur-sm">
+      {/* Cosmic Canvas Toolbar */}
       {!isPreviewMode && (
-        <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+        <div className="bg-black bg-opacity-80 border-b border-gray-800 px-6 py-3 flex items-center justify-between backdrop-blur-sm">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-600">Zoom:</span>
-              <select className="text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+              <span className="text-sm text-gray-400 flex items-center gap-1">
+                <span>🔍</span>
+                Zoom:
+              </span>
+              <select className="text-sm border border-gray-600 bg-black bg-opacity-60 text-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 <option>100%</option>
                 <option>75%</option>
                 <option>50%</option>
-                <option>Fit</option>
+                <option>Fit Galaxy</option>
               </select>
             </div>
             
             <div className="flex items-center space-x-1">
-              <button className="p-2 text-gray-400 hover:text-gray-600 rounded hover:bg-gray-100 transition-colors" title="Undo">
-                <i className="fas fa-undo text-sm"></i>
+              <button className="p-2 text-gray-400 hover:text-white rounded hover:bg-gray-700 transition-colors" title="Undo">
+                <span>↶</span>
               </button>
-              <button className="p-2 text-gray-400 hover:text-gray-600 rounded hover:bg-gray-100 transition-colors" title="Redo">
-                <i className="fas fa-redo text-sm"></i>
+              <button className="p-2 text-gray-400 hover:text-white rounded hover:bg-gray-700 transition-colors" title="Redo">
+                <span>↷</span>
               </button>
             </div>
           </div>
 
           <div className="flex items-center space-x-2">
-            <button className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-md hover:bg-gray-100 transition-colors">
-              <i className="fas fa-mobile-alt"></i>
+            <button className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium text-gray-400 hover:text-white rounded-md hover:bg-gray-700 transition-colors">
+              <span>📱</span>
               <span className="hidden sm:inline">Mobile</span>
             </button>
-            <button className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium bg-primary-50 text-primary-600 rounded-md">
-              <i className="fas fa-desktop"></i>
+            <button className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium bg-blue-500 bg-opacity-20 text-blue-300 rounded-md border border-blue-500">
+              <span>🖥️</span>
               <span className="hidden sm:inline">Desktop</span>
             </button>
           </div>
         </div>
       )}
 
-      {/* Canvas Container */}
+      {/* Cosmic Canvas Container */}
       <div className="flex-1 p-6 overflow-auto">
         <div className="max-w-4xl mx-auto">
           <div 
             ref={setNodeRef}
-            className={`bg-white rounded-lg shadow-sm border-2 ${
-              isOver ? 'border-primary-300 bg-primary-50' : 'border-dashed border-gray-200'
+            className={`bg-black bg-opacity-60 rounded-lg shadow-2xl border-2 backdrop-blur-sm ${
+              isOver ? 'border-blue-400 bg-blue-500 bg-opacity-10' : 'border-dashed border-gray-700'
             } min-h-screen p-8 relative transition-all`}
+            style={{
+              boxShadow: isOver ? '0 0 30px rgba(59, 130, 246, 0.3)' : '0 0 20px rgba(0, 0, 0, 0.5)'
+            }}
           >
             {components.length === 0 ? (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-50">
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-70">
                 <div className="text-center">
-                  <i className="fas fa-plus-circle text-4xl text-gray-300 mb-4"></i>
-                  <p className="text-gray-400 text-lg font-medium">Drag components here to start building</p>
-                  <p className="text-gray-300 text-sm mt-2">Or choose from our templates to get started quickly</p>
+                  <div className="text-6xl mb-6">🌌</div>
+                  <p className="text-gray-300 text-xl font-medium mb-2">Begin Your Cosmic Creation</p>
+                  <p className="text-gray-500 text-sm mb-4">Drag galactic components here to forge your portfolio</p>
+                  <div className="flex items-center justify-center space-x-2 text-gray-600">
+                    <span className="animate-pulse">✦</span>
+                    <span className="animate-pulse delay-100">◦</span>
+                    <span className="animate-pulse delay-200">✧</span>
+                  </div>
                 </div>
               </div>
             ) : (

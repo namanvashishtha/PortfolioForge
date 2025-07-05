@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth, isAuthenticated } from "./auth";
 import { insertPortfolioSchema } from "@shared/schema";
 import { z } from "zod";
 
@@ -12,7 +12,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.id;
       const user = await storage.getUser(userId);
       res.json(user);
     } catch (error) {
@@ -24,7 +24,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Portfolio routes
   app.get('/api/portfolios', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.id;
       const portfolios = await storage.getUserPortfolios(userId);
       res.json(portfolios);
     } catch (error) {
@@ -35,7 +35,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/portfolios', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.id;
       const portfolioData = insertPortfolioSchema.parse({
         name: req.body.name || 'Untitled Portfolio',
         layout: req.body.layout || { components: [], theme: {} },
@@ -53,7 +53,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/portfolios/:id', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.id;
       const portfolioId = parseInt(req.params.id);
       
       const portfolio = await storage.getPortfolio(portfolioId, userId);
@@ -70,7 +70,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.put('/api/portfolios/:id', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.id;
       const portfolioId = parseInt(req.params.id);
       
       const updateData = insertPortfolioSchema.partial().parse(req.body);
@@ -85,7 +85,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.delete('/api/portfolios/:id', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.id;
       const portfolioId = parseInt(req.params.id);
       
       await storage.deletePortfolio(portfolioId, userId);
@@ -98,7 +98,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/portfolios/:id/publish', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.id;
       const portfolioId = parseInt(req.params.id);
       const { siteName } = req.body;
       
